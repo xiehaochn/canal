@@ -16,6 +16,11 @@
     <dependencies>
         <dependency>
             <groupId>com.alibaba.otter</groupId>
+            <artifactId>canal.instance.core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.otter</groupId>
             <artifactId>canal.protocol</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
@@ -35,6 +40,7 @@
             <artifactId>joda-time</artifactId>
             <version>2.9.4</version>
         </dependency>
+
     </dependencies>
 
 </project>

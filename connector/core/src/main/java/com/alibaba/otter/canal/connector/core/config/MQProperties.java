@@ -21,6 +21,8 @@ public class MQProperties {
     private String  aliyunSecretKey         = "";
     private int     aliyunUid               = 0;
 
+    private boolean atlasMode=false;
+
     public boolean isFlatMessage() {
         return flatMessage;
     }
@@ -107,5 +109,13 @@ public class MQProperties {
 
     public void setAliyunUid(int aliyunUid) {
         this.aliyunUid = aliyunUid;
+    }
+
+    public boolean isAtlasMode() {
+        return atlasMode;
+    }
+
+    public void setAtlasMode(boolean atlasMode) {
+        this.atlasMode = atlasMode;
     }
 }
