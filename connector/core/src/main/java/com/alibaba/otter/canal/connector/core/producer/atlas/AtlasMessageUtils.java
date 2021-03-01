@@ -56,13 +56,45 @@ public class AtlasMessageUtils {
         return createIndexMessage(
             flatMessage.getDatabase().toLowerCase(), flatMessage.getTable().toLowerCase());
       case "DINDEX":
-
+        return deleteIndexMessage(
+            flatMessage.getDatabase().toLowerCase(),
+            flatMessage.getTable().toLowerCase(),
+            flatMessage.getSql());
       case "ERASE":
         return eraseTableMassage(
             flatMessage.getDatabase().toLowerCase(), flatMessage.getTable().toLowerCase());
       default:
         return null;
     }
+  }
+
+  private List<AtlasBaseHookMessage> deleteIndexMessage(String db, String table, String sql) {
+    List<AtlasBaseHookMessage> dIdxMessages = new ArrayList<>();
+    AtlasBaseHookMessage atlasBaseHookMessage = new AtlasBaseHookMessage();
+    setCommonProperties(atlasBaseHookMessage);
+    AtlasDeleteMessage deleteIdxMessage = new AtlasDeleteMessage();
+    deleteIdxMessage.setType(HookNotificationType.ENTITY_DELETE_V2);
+    deleteIdxMessage.setUser(mysqlAuthInfo.getUsername());
+    String idxName = "";
+    String pattern = "index\\s.*\\son";
+    Pattern r = Pattern.compile(pattern);
+    Matcher m = r.matcher(sql.toLowerCase());
+    while (m.find()) {
+      String tmp = m.group();
+      String[] splitString = tmp.replaceAll("'", "").split("\\s");
+      idxName = splitString[1];
+    }
+    AtlasDeleteEntity atlasDeleteEntity = new AtlasDeleteEntity();
+    HashMap<String, String> hashMap = new HashMap<>();
+    hashMap.put(
+        "qualifiedName", AtlasQualifiedNameUtils.getIdxQuaName(hostName, port, db, table, idxName));
+    atlasDeleteEntity.setUniqueAttributes(hashMap);
+    atlasDeleteEntity.setTypeName(AtlasCreateEntity.RDBMS_INDEX);
+    deleteIdxMessage.setEntities(Collections.singletonList(atlasDeleteEntity));
+    atlasBaseHookMessage.setMessage(deleteIdxMessage);
+    dIdxMessages.add(atlasBaseHookMessage);
+    dIdxMessages.addAll(refreshTableMassage(db, table, HookNotificationType.ENTITY_FULL_UPDATE_V2));
+    return dIdxMessages;
   }
 
   private List<AtlasBaseHookMessage> createIndexMessage(String db, String table) {
@@ -394,7 +426,7 @@ public class AtlasMessageUtils {
     HashMap<String, Object> dbAttributes = new HashMap<>();
     dbAttributes.put("qualifiedName", AtlasQualifiedNameUtils.getDbQuaName(hostName, port, dbName));
     dbAttributes.put("description", dbName);
-    dbAttributes.put("name", tabName);
+    dbAttributes.put("name", dbName);
     dbAttributes.put(
         "instance", new AtlasReferredEntity(instanceGuid, AtlasCreateEntity.RDBMS_INSTANCE));
     dbEntity.setAttributes(dbAttributes);
