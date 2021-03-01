@@ -1,6 +1,6 @@
 package com.alibaba.otter.canal.protocol.atlas.base;
 
-public class AtlasBaseHookMessage {
+public class AtlasHookMessage {
   private AtlasBaseMessage message;
   private String msgCompressionKind;
   private String msgCreatedBy;

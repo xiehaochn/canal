@@ -17,7 +17,7 @@ import com.alibaba.otter.canal.connector.kafka.config.KafkaProducerConfig;
 import com.alibaba.otter.canal.parse.support.AuthenticationInfo;
 import com.alibaba.otter.canal.protocol.FlatMessage;
 import com.alibaba.otter.canal.protocol.Message;
-import com.alibaba.otter.canal.protocol.atlas.base.AtlasBaseHookMessage;
+import com.alibaba.otter.canal.protocol.atlas.base.AtlasHookMessage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -287,27 +287,17 @@ public class CanalKafkaProducer extends AbstractMQProducer implements CanalMQPro
           final int partition =
               mqDestination.getPartition() != null ? mqDestination.getPartition() : 0;
           if (mqProperties.isAtlasMode()) {
-            logger.info(
-                "mysqlAuthInfo:"
-                    + mysqlAuthInfo.getAddress().getHostString()
-                    + ";"
-                    + mysqlAuthInfo.getAddress().getPort()
-                    + ";"
-                    + mysqlAuthInfo.getUsername()
-                    + ";"
-                    + mysqlAuthInfo.getPassword());
             AtlasMessageUtils atlasMessageUtils = new AtlasMessageUtils(mysqlAuthInfo);
-            List<AtlasBaseHookMessage> atlasBaseHookMessages =
+            List<AtlasHookMessage> atlasHookMessages =
                 atlasMessageUtils.convertToAtlasEntityMessage(flatMessage);
-            if (!atlasBaseHookMessages.isEmpty()) {
-              for (AtlasBaseHookMessage atlasBaseHookMessage : atlasBaseHookMessages) {
+            if (!atlasHookMessages.isEmpty()) {
+              for (AtlasHookMessage atlasHookMessage : atlasHookMessages) {
                 records.add(
                     new ProducerRecord<>(
                         topicName,
                         partition,
                         null,
-                        JSON.toJSONBytes(
-                            atlasBaseHookMessage, SerializerFeature.WriteMapNullValue)));
+                        JSON.toJSONBytes(atlasHookMessage, SerializerFeature.WriteMapNullValue)));
               }
             }
           } else {

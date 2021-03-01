@@ -1,20 +1,19 @@
 package com.alibaba.otter.canal.connector.core.producer.atlas;
 
 public class AtlasQualifiedNameUtils {
-  protected static String getIdxQuaName(
-      String hostName, String port, String dbName, String tabName, String name) {
+  protected static String getIdxQuaName(AtlasAttributesQueryUtils.TabInfo tabInfo, String name) {
     StringBuilder idxQuaName = new StringBuilder();
     idxQuaName
         .append("<")
-        .append(hostName)
+        .append(tabInfo.getHostName())
         .append(">.")
-        .append(dbName)
+        .append(tabInfo.getDbName())
         .append(".")
-        .append(tabName)
+        .append(tabInfo.getTabName())
         .append(".<index>")
         .append(name)
         .append("@")
-        .append(port);
+        .append(tabInfo.getPort());
     return idxQuaName.toString();
   }
 
@@ -28,35 +27,33 @@ public class AtlasQualifiedNameUtils {
     return dbQuaName.toString();
   }
 
-  protected static String getColQuaName(
-      String hostName, String port, String dbName, String tabName, String colName) {
+  protected static String getColQuaName(AtlasAttributesQueryUtils.TabInfo tabInfo, String colName) {
     StringBuilder colQuaName = new StringBuilder();
     colQuaName
         .append("<")
-        .append(hostName)
+        .append(tabInfo.getHostName())
         .append(">.")
-        .append(dbName)
+        .append(tabInfo.getDbName())
         .append(".")
-        .append(tabName)
+        .append(tabInfo.getTabName())
         .append(".")
         .append(colName)
         .append("@")
-        .append(port);
+        .append(tabInfo.getPort());
     return colQuaName.toString();
   }
 
-  protected static String getTabQueName(
-      String hostName, String port, String dbName, String tabName) {
+  protected static String getTabQueName(AtlasAttributesQueryUtils.TabInfo tabInfo) {
     StringBuilder tabQuaName = new StringBuilder();
     tabQuaName
         .append("<")
-        .append(hostName)
+        .append(tabInfo.getHostName())
         .append(">.")
-        .append(dbName)
+        .append(tabInfo.getDbName())
         .append(".")
-        .append(tabName)
+        .append(tabInfo.getTabName())
         .append("@")
-        .append(port);
+        .append(tabInfo.getPort());
     return tabQuaName.toString();
   }
 }
