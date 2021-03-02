@@ -17,13 +17,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AtlasMessageUtils {
-  private AuthenticationInfo mysqlAuthInfo;
-
   private String hostName;
 
   private String port;
 
   private String user;
+
+  private String passWord;
 
   private static final String INFORMATION_SCHEMA = "information_schema";
 
@@ -36,11 +36,26 @@ public class AtlasMessageUtils {
   private static final String SELECT_INDEX_INFO_SQL =
       "select index_name,non_unique,index_type,index_comment,column_name from information_schema.statistics where table_schema=? and table_name=?";
 
+  public AtlasMessageUtils(String hostName, String port, String user, String passWord) {
+    this.hostName = hostName;
+    this.port = port;
+    this.user = user;
+    this.passWord = passWord;
+  }
+
   public AtlasMessageUtils(AuthenticationInfo mysqlAuthInfo) {
-    this.mysqlAuthInfo = mysqlAuthInfo;
     this.hostName = mysqlAuthInfo.getAddress().getHostString();
     this.port = Integer.toString(mysqlAuthInfo.getAddress().getPort());
     this.user = mysqlAuthInfo.getUsername();
+    this.passWord = mysqlAuthInfo.getPassword();
+  }
+
+  public List<AtlasHookMessage> convertToAtlasEntityMessage(String dbName, String tableName) {
+    FlatMessage flatMessage = new FlatMessage();
+    flatMessage.setType("CREATE");
+    flatMessage.setDatabase(dbName);
+    flatMessage.setTable(tableName);
+    return convertToAtlasEntityMessage(flatMessage);
   }
 
   public List<AtlasHookMessage> convertToAtlasEntityMessage(FlatMessage flatMessage) {
@@ -89,7 +104,7 @@ public class AtlasMessageUtils {
     Connection connection = null;
     AtlasCreateEntities tabCreateEntities = new AtlasCreateEntities();
     try {
-      connection = initConnection(mysqlAuthInfo);
+      connection = initConnection();
       Map<String, AtlasCreateEntity> tabRefEntities =
           getTableReferredEntities(dbName, tabName, connection);
       List<AtlasBaseEntity> tabEntities = getTabSecEntities(dbName, tabName, connection);
@@ -385,7 +400,7 @@ public class AtlasMessageUtils {
     atlasDeleteEntity.setTypeName(AtlasCreateEntity.RDBMS_INDEX);
     AtlasDeleteMessage dIdxMessage = new AtlasDeleteMessage();
     dIdxMessage.setType(HookNotificationType.ENTITY_DELETE_V2);
-    dIdxMessage.setUser(mysqlAuthInfo.getUsername());
+    dIdxMessage.setUser(user);
     dIdxMessage.setEntities(Collections.singletonList(atlasDeleteEntity));
     AtlasHookMessage dIdxHookMessage = new AtlasHookMessage();
     setCommonProperties(dIdxHookMessage);
@@ -421,7 +436,7 @@ public class AtlasMessageUtils {
     cIdxEntities.setReferredEntities(refEntities);
     AtlasCreateMessage cIdxMessage = new AtlasCreateMessage();
     cIdxMessage.setType(HookNotificationType.ENTITY_CREATE_V2);
-    cIdxMessage.setUser(mysqlAuthInfo.getUsername());
+    cIdxMessage.setUser(user);
     cIdxMessage.setEntities(cIdxEntities);
     AtlasHookMessage cIdxHookMessage = new AtlasHookMessage();
     setCommonProperties(cIdxHookMessage);
@@ -456,23 +471,22 @@ public class AtlasMessageUtils {
     atlasHookMessage.setMsgCompressionKind("NONE");
     atlasHookMessage.setMsgCreatedBy("MySQL");
     atlasHookMessage.setMsgCreationTime(System.currentTimeMillis());
-    atlasHookMessage.setMsgSourceIP(mysqlAuthInfo.getAddress().getHostString());
+    atlasHookMessage.setMsgSourceIP(hostName);
     atlasHookMessage.setMsgSplitCount(1);
     atlasHookMessage.setMsgSplitIdx(1);
     atlasHookMessage.setVersion(new Version("1.0.0", Collections.singletonList(1)));
   }
 
-  private Connection initConnection(AuthenticationInfo mysqlAuthInfo) throws Exception {
+  private Connection initConnection() throws Exception {
     String source =
         "jdbc:mysql://"
-            + mysqlAuthInfo.getAddress().getHostString()
+            + hostName
             + ":"
-            + mysqlAuthInfo.getAddress().getPort()
+            + port
             + "/"
             + INFORMATION_SCHEMA
             + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     Class.forName("com.mysql.jdbc.Driver").newInstance();
-    return DriverManager.getConnection(
-        source, mysqlAuthInfo.getUsername(), mysqlAuthInfo.getPassword());
+    return DriverManager.getConnection(source, user, passWord);
   }
 }
