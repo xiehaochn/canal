@@ -1,13 +1,13 @@
-package com.alibaba.otter.canal.connector.core.producer.atlas;
+package com.atlas.mysql.bridge.utils;
 
 import com.alibaba.otter.canal.parse.support.AuthenticationInfo;
 import com.alibaba.otter.canal.protocol.FlatMessage;
-import com.alibaba.otter.canal.protocol.atlas.base.*;
-import com.alibaba.otter.canal.protocol.atlas.create.AtlasCreateEntities;
-import com.alibaba.otter.canal.protocol.atlas.create.AtlasCreateEntity;
-import com.alibaba.otter.canal.protocol.atlas.create.AtlasCreateMessage;
-import com.alibaba.otter.canal.protocol.atlas.delete.AtlasDeleteEntity;
-import com.alibaba.otter.canal.protocol.atlas.delete.AtlasDeleteMessage;
+import com.atlas.mysql.bridge.entity.base.*;
+import com.atlas.mysql.bridge.entity.create.AtlasCreateEntities;
+import com.atlas.mysql.bridge.entity.create.AtlasCreateEntity;
+import com.atlas.mysql.bridge.entity.create.AtlasCreateMessage;
+import com.atlas.mysql.bridge.entity.delete.AtlasDeleteEntity;
+import com.atlas.mysql.bridge.entity.delete.AtlasDeleteMessage;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

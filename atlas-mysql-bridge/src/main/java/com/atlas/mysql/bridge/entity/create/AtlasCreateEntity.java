@@ -1,6 +1,6 @@
-package com.alibaba.otter.canal.protocol.atlas.create;
+package com.atlas.mysql.bridge.entity.create;
 
-import com.alibaba.otter.canal.protocol.atlas.base.AtlasBaseEntity;
+import com.atlas.mysql.bridge.entity.base.AtlasBaseEntity;
 
 import java.util.HashMap;
 

@@ -1,4 +1,4 @@
-package com.alibaba.otter.canal.protocol.atlas.base;
+package com.atlas.mysql.bridge.entity.base;
 
 import java.util.concurrent.atomic.AtomicLong;
 

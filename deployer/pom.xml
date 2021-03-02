@@ -18,6 +18,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba.otter</groupId>
+            <artifactId>atlas-mysql-bridge</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- 这里指定runtime的metrics provider-->
         <dependency>
             <groupId>com.alibaba.otter</groupId>

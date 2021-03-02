@@ -1,7 +1,7 @@
-package com.alibaba.otter.canal.connector.core.producer.atlas;
+package com.atlas.mysql.bridge.utils;
 
-import com.alibaba.otter.canal.protocol.atlas.base.AtlasBaseEntity;
-import com.alibaba.otter.canal.protocol.atlas.create.AtlasCreateEntity;
+import com.atlas.mysql.bridge.entity.base.AtlasBaseEntity;
+import com.atlas.mysql.bridge.entity.create.AtlasCreateEntity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

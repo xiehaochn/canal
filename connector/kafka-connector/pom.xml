@@ -29,6 +29,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.alibaba.otter</groupId>
+            <artifactId>atlas-mysql-bridge</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka_2.11</artifactId>
             <version>1.1.1</version>

@@ -1,6 +1,6 @@
-package com.alibaba.otter.canal.protocol.atlas.create;
+package com.atlas.mysql.bridge.entity.create;
 
-import com.alibaba.otter.canal.protocol.atlas.base.AtlasBaseMessage;
+import com.atlas.mysql.bridge.entity.base.AtlasBaseMessage;
 
 public class AtlasCreateMessage extends AtlasBaseMessage {
   private AtlasCreateEntities entities;

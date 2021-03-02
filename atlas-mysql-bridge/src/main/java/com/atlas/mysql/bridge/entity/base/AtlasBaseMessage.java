@@ -1,4 +1,4 @@
-package com.alibaba.otter.canal.protocol.atlas.base;
+package com.atlas.mysql.bridge.entity.base;
 
 public class AtlasBaseMessage {
   private HookNotificationType type;

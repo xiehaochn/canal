@@ -1,6 +1,6 @@
-package com.alibaba.otter.canal.protocol.atlas.delete;
+package com.atlas.mysql.bridge.entity.delete;
 
-import com.alibaba.otter.canal.protocol.atlas.base.AtlasBaseEntity;
+import com.atlas.mysql.bridge.entity.base.AtlasBaseEntity;
 
 import java.util.HashMap;
 

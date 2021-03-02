@@ -1,4 +1,4 @@
-package com.alibaba.otter.canal.connector.core.producer.atlas;
+package com.atlas.mysql.bridge.utils;
 
 public class AtlasQualifiedNameUtils {
   protected static String getIdxQuaName(AtlasAttributesQueryUtils.TabInfo tabInfo, String name) {
