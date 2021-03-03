@@ -203,6 +203,9 @@ public class AtlasImportMysql {
 
   private static Map<String, List<String>> matchTabRegex(
       Map<String, List<String>> dbRegexMatchedList, String tableRegex) {
+    if (tableRegex == null || tableRegex.equals("")) {
+      return dbRegexMatchedList;
+    }
     HashMap<String, List<String>> tabRegexMatchedList = new HashMap<>();
     Pattern tabPattern = Pattern.compile(tableRegex);
     for (String dbName : dbRegexMatchedList.keySet()) {
@@ -221,6 +224,9 @@ public class AtlasImportMysql {
 
   private static Map<String, List<String>> matchDbRegex(
       Map<String, List<String>> dbTableList, String dbRegex) {
+    if (dbRegex == null || dbRegex.equals("")) {
+      return dbTableList;
+    }
     HashMap<String, List<String>> dbRegexMatchedList = new HashMap<>();
     Pattern dbPattern = Pattern.compile(dbRegex);
     for (String dbName : dbTableList.keySet()) {
