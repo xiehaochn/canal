@@ -124,7 +124,8 @@ public class AtlasAttributesQueryUtils {
     colAttributes.put("name", resultSet.getString("column_name"));
     colAttributes.put("description", resultSet.getString("column_comment"));
     colAttributes.put("data_type", resultSet.getString("column_type"));
-    colAttributes.put("length", resultSet.getInt("character_maximum_length"));
+    long columnLength = resultSet.getLong("character_maximum_length");
+    colAttributes.put("length", columnLength > Integer.MAX_VALUE ? -1 : (int) columnLength);
     colAttributes.put("default_value", resultSet.getString("column_default"));
     colAttributes.put("comment", resultSet.getString("column_comment"));
     colAttributes.put("isNullable", resultSet.getString("is_nullable").equalsIgnoreCase("YES"));
