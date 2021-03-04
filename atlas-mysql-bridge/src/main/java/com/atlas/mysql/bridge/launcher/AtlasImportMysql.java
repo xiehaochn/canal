@@ -90,16 +90,22 @@ public class AtlasImportMysql {
     kafkaProperties.put(
         ProducerConfig.COMPRESSION_TYPE_CONFIG, properties.getProperty("kafka.compression.type"));
     kafkaProperties.put(
-        ProducerConfig.BATCH_SIZE_CONFIG, properties.getProperty("kafka.batch.size"));
-    kafkaProperties.put(ProducerConfig.LINGER_MS_CONFIG, properties.getProperty("kafka.linger.ms"));
+        ProducerConfig.BATCH_SIZE_CONFIG,
+        Integer.parseInt(properties.getProperty("kafka.batch.size")));
     kafkaProperties.put(
-        ProducerConfig.MAX_REQUEST_SIZE_CONFIG, properties.getProperty("kafka.max.request.size"));
+        ProducerConfig.LINGER_MS_CONFIG,
+        Integer.parseInt(properties.getProperty("kafka.linger.ms")));
     kafkaProperties.put(
-        ProducerConfig.BUFFER_MEMORY_CONFIG, properties.getProperty("kafka.buffer.memory"));
+        ProducerConfig.MAX_REQUEST_SIZE_CONFIG,
+        Integer.parseInt(properties.getProperty("kafka.max.request.size")));
+    kafkaProperties.put(
+        ProducerConfig.BUFFER_MEMORY_CONFIG,
+        Integer.parseInt(properties.getProperty("kafka.buffer.memory")));
     kafkaProperties.put(
         ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION,
-        properties.getProperty("kafka.max.in.flight.requests.per.connection"));
-    kafkaProperties.put(ProducerConfig.RETRIES_CONFIG, properties.getProperty("kafka.retries"));
+        Integer.parseInt(properties.getProperty("kafka.max.in.flight.requests.per.connection")));
+    kafkaProperties.put(
+        ProducerConfig.RETRIES_CONFIG, Integer.parseInt(properties.getProperty("kafka.retries")));
     kafkaProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     kafkaProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, EmptySerializer.class);
     if (Boolean.parseBoolean(properties.getProperty("kafka.kerberos.enable"))) {
@@ -156,6 +162,7 @@ public class AtlasImportMysql {
       producer.send(record);
     }
     producer.flush();
+    logger.info("## finish to load metadata");
   }
 
   private static String printTableList(Map<String, List<String>> regexMatchedTableList) {
