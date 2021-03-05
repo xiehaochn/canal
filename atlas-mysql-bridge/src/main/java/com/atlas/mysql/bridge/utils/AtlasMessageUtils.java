@@ -332,17 +332,14 @@ public class AtlasMessageUtils {
       Matcher matcherAlter = patternAlter.matcher(sql);
       while (matcherAlter.find()) {
         String tabNameString = matcherAlter.group();
-        System.out.println(tabNameString);
         String[] tabNames = tabNameString.split("\\s*rename\\s*(to)?\\s*");
         tabMap.put(tabNames[0].replaceAll("\\s", ""), tabNames[1].replaceAll("\\s", ""));
       }
     } else {
       Pattern patternRename = Pattern.compile("[(\\s*),][\\w.]*\\s*to\\s*[\\w.]*");
       Matcher matcherRename = patternRename.matcher(sql);
-      System.out.println(matcherRename.groupCount());
       while (matcherRename.find()) {
         String tabNameString = matcherRename.group();
-        System.out.println(tabNameString);
         String[] tabNames = tabNameString.split("\\s*to\\s*");
         tabMap.put(tabNames[0].replaceAll("\\s", ""), tabNames[1].replaceAll("\\s", ""));
       }
